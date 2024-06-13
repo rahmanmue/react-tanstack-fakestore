@@ -1,48 +1,64 @@
-import { InputText} from 'primereact/inputtext';
+import { InputText } from 'primereact/inputtext';
 import { Password as PrimePassword } from 'primereact/password';
-        
+import React from 'react';
+import "./input.scss"
 
 export interface InputTextProps {
+    id: string;
+    type: string;
+    placeholder?: string;
+    invalid?: boolean;
+}
+
+export interface PasswordProps {
+    id: string;
+    placeholder?: string;
+    invalid?: boolean;
+}
+
+export interface InputProps {
     label: string;
-    invalid?: boolean | undefined;
-
+    className?: string;
+    children: React.ReactNode;
 }
 
-export interface PasswordProps{
-    label: string;
-    invalid?: boolean | undefined;
-}
-
-const Text: React.FC<InputTextProps> = (props) => {
-  const {label, invalid} = props;
-  return (
-    <div className="flex flex-column gap-2">
-        <label htmlFor={label}>{label}</label>
-        <InputText id={label} invalid={invalid} aria-describedby={`${label}-help`} />
-        <small id={`${label}-help`}>
-            Enter your username.
-        </small>
-    </div>
-  )
-}
-
-const Password: React.FC<PasswordProps> = (props) => {
-  const {label, invalid} = props;
-  return (
-    <div className="flex flex-column gap-2">
-      <label htmlFor={label}>{label}</label>
-      <PrimePassword feedback={false} invalid={invalid} id={label} toggleMask />
-    </div>
-  )
-}
-
-
-
-const Input = {
-  Text,
-  Password
+const Input: React.FC<InputProps> & { Text: React.FC<InputTextProps>, Password: React.FC<PasswordProps> } = (props) => {
+    const { label, className, children } = props;
+    return (
+        <div className={`flex flex-column gap-2 ${className}`}>
+            <label htmlFor={label} className="text-color-secondary">{label}</label>
+            {children}
+        </div>
+    );
 };
 
+const Text: React.FC<InputTextProps> = (props) => {
+    const { id, type, placeholder, invalid } = props;
+    return (
+        <InputText 
+            id={id} 
+            type={type}
+            invalid={invalid}
+            placeholder={placeholder}
+            
+        />
+    );
+};
 
+const Password: React.FC<PasswordProps> = (props) => {
+    const { id, placeholder, invalid } = props;
+    return (
+        <PrimePassword 
+            inputId={id}
+            placeholder={placeholder}
+            invalid={invalid}
+            feedback={false} 
+            toggleMask 
+        />
+    );
+};
+
+Input.Text = Text;
+Input.Password = Password;
 
 export default Input;

@@ -1,7 +1,12 @@
-import {AuthLayout} from '../Layouts/index'
+import { FormLogin } from "../Fragments";
+import { AuthLayout } from "../Layouts/index";
 
-export const Login = () => {
+const Login = () => {
   return (
-    <AuthLayout title="Login"/>
-  )
-}
+    <AuthLayout title="Login">
+      <FormLogin />
+    </AuthLayout>
+  );
+};
+
+export default Login;
